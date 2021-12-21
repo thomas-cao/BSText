@@ -34,22 +34,22 @@ import UIKit
             return sharedWindowOne
         }
         
-        if !TextUtilities.isAppExtension {
-            let one = self.init()
-            one.rootViewController = UIViewController()
-            var rect = CGRect.zero
-            rect.size = TextUtilities.textScreenSize
-            one.frame = rect
-            one.isUserInteractionEnabled = false
-            one.windowLevel = UIWindow.Level(UIWindow.Level.statusBar.rawValue + 1)
-            one.isHidden = false
-            // for iOS9:
-            one.isOpaque = false
-            one.backgroundColor = UIColor.clear
-            one.layer.backgroundColor = UIColor.clear.cgColor
-            
-            sharedWindowOne = one
-        }
+//        if !TextUtilities.isAppExtension {
+//            let one = self.init()
+//            one.rootViewController = UIViewController()
+//            var rect = CGRect.zero
+//            rect.size = TextUtilities.textScreenSize
+//            one.frame = rect
+//            one.isUserInteractionEnabled = false
+//            one.windowLevel = UIWindow.Level(UIWindow.Level.statusBar.rawValue + 1)
+//            one.isHidden = false
+//            // for iOS9:
+//            one.isOpaque = false
+//            one.backgroundColor = UIColor.clear
+//            one.layer.backgroundColor = UIColor.clear.cgColor
+//
+//            sharedWindowOne = one
+//        }
         
         return sharedWindowOne
     }
