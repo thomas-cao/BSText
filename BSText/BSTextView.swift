@@ -1140,22 +1140,22 @@ open class BSTextView: UIScrollView, UITextInput, UITextInputTraits, UIScrollVie
         _placeHolderView.image = nil
         _placeHolderView.frame = frame
         if (placeholderAttributedText?.length ?? 0) > 0 {
-            let container = _innerContainer.copy() as! TextContainer
-            container.size = bounds.size
-            container.truncationType = TextTruncationType.end
-            container.truncationToken = nil
-            let layout = TextLayout(container: container, text: placeholderAttributedText)!
-            let size: CGSize = layout.textBoundingSize
+            let container = _innerContainer.copy() as? TextContainer
+            container?.size = bounds.size
+            container?.truncationType = TextTruncationType.end
+            container?.truncationToken = nil
+            let layout = TextLayout(container: container, text: placeholderAttributedText)
+            guard let size: CGSize = layout?.textBoundingSize else {return}
             let needDraw: Bool = size.width > 1 && size.height > 1
             if needDraw {
                 UIGraphicsBeginImageContextWithOptions(size, _: false, _: 0)
                 let context = UIGraphicsGetCurrentContext()
-                layout.draw(in: context, size: size, debug: debugOption)
+                layout?.draw(in: context, size: size, debug: debugOption)
                 let image: UIImage? = UIGraphicsGetImageFromCurrentImageContext()
                 UIGraphicsEndImageContext()
                 _placeHolderView.image = image
                 frame.size = image?.size ?? CGSize.zero
-                if container.isVerticalForm {
+                if container?.isVerticalForm ?? false {
                     frame.origin.x = bounds.size.width - (image?.size.width ?? 0)
                 } else {
                     frame.origin = CGPoint.zero
@@ -4183,7 +4183,8 @@ open class BSTextView: UIScrollView, UITextInput, UITextInputTraits, UIScrollVie
     }
     
     public func textRange(from fromPosition: UITextPosition, to toPosition: UITextPosition) -> UITextRange? {
-        return TextRange(start: fromPosition as! TextPosition, end: toPosition as! TextPosition)
+        guard let start = fromPosition as? TextPosition, let end = toPosition as? TextPosition else {return nil}
+        return TextRange(start: start, end: end)
     }
     
     public func compare(_ position: UITextPosition, to other: UITextPosition) -> ComparisonResult {
