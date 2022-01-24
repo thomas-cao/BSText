@@ -3318,10 +3318,10 @@ open class BSTextView: UIScrollView, UITextInput, UITextInputTraits, UIScrollVie
                     }
                 }
             }
-            if _trackingRange != nil && (!(_trackingRange == _selectedTextRange) || state.trackingPreSelect) {
-                if !(_trackingRange == _selectedTextRange) {
+            if let trackingTange = _trackingRange, ((trackingTange != _selectedTextRange) || state.trackingPreSelect)  {
+                if (trackingTange != _selectedTextRange) {
                     _inputDelegate?.selectionWillChange(self)
-                    _selectedTextRange = _trackingRange!
+                    _selectedTextRange = trackingTange
                     _inputDelegate?.selectionDidChange(self)
                     _updateAttributesHolder()
                     _updateOuterProperties()
@@ -3330,7 +3330,6 @@ open class BSTextView: UIScrollView, UITextInput, UITextInputTraits, UIScrollVie
                     _scrollRangeToVisible(_selectedTextRange)
                 }
             }
-            
             _endTouchTracking()
         }
         if !state.swallowTouch {
@@ -4183,8 +4182,9 @@ open class BSTextView: UIScrollView, UITextInput, UITextInputTraits, UIScrollVie
     }
     
     public func textRange(from fromPosition: UITextPosition, to toPosition: UITextPosition) -> UITextRange? {
-        guard let start = fromPosition as? TextPosition, let end = toPosition as? TextPosition else {return nil}
-        return TextRange(start: start, end: end)
+        return nil
+//        guard let start = fromPosition as? TextPosition, let end = toPosition as? TextPosition else {return nil}
+//        return TextRange(start: start, end: end)
     }
     
     public func compare(_ position: UITextPosition, to other: UITextPosition) -> ComparisonResult {
