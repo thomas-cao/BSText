@@ -2902,7 +2902,8 @@ open class BSTextView: UIScrollView, UITextInput, UITextInputTraits, UIScrollVie
         addSubview(_selectionView)
         
         self.debugOption = TextDebugOption.shared
-        TextDebugOption.add(self)
+        // 内存泄露问题
+//        TextDebugOption.add(self)
         
         _updateInnerContainerSize()
         _update()

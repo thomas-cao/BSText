@@ -42,6 +42,7 @@
 		322E396421F81687004AC265 /* dribbble64_imageio.png in Resources */ = {isa = PBXBuildFile; fileRef = 322E394921F81687004AC265 /* dribbble64_imageio.png */; };
 		322E396521F81687004AC265 /* BSFPSLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322E394A21F81687004AC265 /* BSFPSLabel.swift */; };
 		32557FE0249E4325009F57F9 /* MyExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32557FDF249E4325009F57F9 /* MyExample.swift */; };
+		632B06132834FEAD00645E2D /* BSText in Resources */ = {isa = PBXBuildFile; fileRef = 632B06122834FEAD00645E2D /* BSText */; };
 		AA6BBB3D6FE4996C5D548A02 /* Pods_BSTextDemoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5054A7D00FBF84BDFD3017C2 /* Pods_BSTextDemoTests.framework */; };
 		C70D65BAF91CCA8F4C3E7B0D /* Pods_BSTextDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8BD8EF203494111144A38E /* Pods_BSTextDemo.framework */; };
 /* End PBXBuildFile section */
@@ -108,6 +109,7 @@
 		3FDC73D36B8A6F54C9231CD1 /* Pods-BSTextDemo-BSTextDemoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BSTextDemo-BSTextDemoTests.debug.xcconfig"; path = "Target Support Files/Pods-BSTextDemo-BSTextDemoTests/Pods-BSTextDemo-BSTextDemoTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4B8BD8EF203494111144A38E /* Pods_BSTextDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BSTextDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5054A7D00FBF84BDFD3017C2 /* Pods_BSTextDemoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BSTextDemoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		632B06122834FEAD00645E2D /* BSText */ = {isa = PBXFileReference; lastKnownFileType = folder; name = BSText; path = ../../BSText; sourceTree = "<group>"; };
 		6BD437B31193762BD05A6622 /* Pods_BSTextDemoUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BSTextDemoUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F866DA1F2FD70DF9C8F6683 /* Pods-BSTextDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BSTextDemo.release.xcconfig"; path = "Target Support Files/Pods-BSTextDemo/Pods-BSTextDemo.release.xcconfig"; sourceTree = "<group>"; };
 		94177DC67F2AE6992D359D40 /* Pods-BSTextDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BSTextDemo.debug.xcconfig"; path = "Target Support Files/Pods-BSTextDemo/Pods-BSTextDemo.debug.xcconfig"; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 		322E38B521F803CE004AC265 /* BSTextDemo */ = {
 			isa = PBXGroup;
 			children = (
+				632B06122834FEAD00645E2D /* BSText */,
 				322E392E21F81687004AC265 /* Examples */,
 				322E393C21F81687004AC265 /* SupportFiles */,
 				322E38B621F803CE004AC265 /* AppDelegate.swift */,
@@ -383,6 +386,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				632B06132834FEAD00645E2D /* BSText in Resources */,
 				322E38C121F803CF004AC265 /* LaunchScreen.storyboard in Resources */,
 				322E395C21F81687004AC265 /* EmoticonQQ.bundle in Resources */,
 				322E395F21F81687004AC265 /* dribbble256_imageio.png in Resources */,
