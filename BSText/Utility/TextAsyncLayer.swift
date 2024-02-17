@@ -136,41 +136,82 @@ public class TextAsyncLayer: CALayer {
                 
                 return
             }
-            
             TextAsyncLayerGetDisplayQueue().async(execute: {
                 if isCancelled() {
                     return
                 }
-                UIGraphicsBeginImageContextWithOptions(size, _: tmpopaque, _: scale)
-                let context = UIGraphicsGetCurrentContext()
-                if tmpopaque && context != nil {
-                    context?.saveGState()
+                var image: UIImage?
+                if #available(iOS 10.0, *) {
+                    let format = UIGraphicsImageRendererFormat()
+                    format.opaque = self.isOpaque
+                    format.scale = self.contentsScale
+                    let renderer = UIGraphicsImageRenderer(size: self.bounds.size, format: format)
+                    image = renderer.image(actions: { rendererContext in
+                    let context = rendererContext.cgContext
+                    if self.isOpaque {
+                        var size: CGSize = self.bounds.size
+                        size.width *= self.contentsScale
+                        size.height *= self.contentsScale
+                    context.saveGState()
                     do {
-                        if tmpbackgroundColor != nil || tmpbackgroundColor!.alpha < 1 {
-                            context?.setFillColor(UIColor.white.cgColor)
-                            context?.addRect(CGRect(x: 0, y: 0, width: size.width * scale, height: size.height * scale))
-                            context?.fillPath()
-                        }
-                        if tmpbackgroundColor != nil {
-                            context?.setFillColor(tmpbackgroundColor!)
-                            context?.addRect(CGRect(x: 0, y: 0, width: size.width * scale, height: size.height * scale))
-                            context?.fillPath()
-                        }
+                    if self.backgroundColor == nil || self.backgroundColor!.alpha < 1 {
+                    context.setFillColor(UIColor.white.cgColor)
+                    context.addRect(CGRect(x: 0, y: 0, width: size.width, height: size.height))
+                    context.fillPath()
                     }
-                    context?.restoreGState()
-                }
-                task?.display!(context, size, isCancelled)
-                if isCancelled() {
-                    UIGraphicsEndImageContext()
-                    DispatchQueue.main.async(execute: {
-                        if ((task?.didDisplay) != nil) {
-                            task?.didDisplay!(self, false)
-                        }
+                    if self.backgroundColor != nil {
+                    context.setFillColor(self.backgroundColor!)
+                    context.addRect(CGRect(x: 0, y: 0, width: size.width, height: size.height))
+                    context.fillPath()
+                    }
+                    }
+                    context.restoreGState()
+                    }
+                    task?.display!(context, self.bounds.size, {
+                    return false
                     })
-                    return
+                    })
+                    if isCancelled() {
+                        DispatchQueue.main.async(execute: {
+                            if ((task?.didDisplay) != nil) {
+                                task?.didDisplay!(self, false)
+                            }
+                        })
+                        return
+                    }
+                } else {
+                    UIGraphicsBeginImageContextWithOptions(size, _: tmpopaque, _: scale)
+                    let context = UIGraphicsGetCurrentContext()
+                    if tmpopaque && context != nil {
+                        context?.saveGState()
+                        do {
+                            if tmpbackgroundColor != nil || tmpbackgroundColor!.alpha < 1 {
+                                context?.setFillColor(UIColor.white.cgColor)
+                                context?.addRect(CGRect(x: 0, y: 0, width: size.width * scale, height: size.height * scale))
+                                context?.fillPath()
+                            }
+                            if tmpbackgroundColor != nil {
+                                context?.setFillColor(tmpbackgroundColor!)
+                                context?.addRect(CGRect(x: 0, y: 0, width: size.width * scale, height: size.height * scale))
+                                context?.fillPath()
+                            }
+                        }
+                        context?.restoreGState()
+                    }
+                    task?.display!(context, size, isCancelled)
+                    if isCancelled() {
+                        UIGraphicsEndImageContext()
+                        DispatchQueue.main.async(execute: {
+                            if ((task?.didDisplay) != nil) {
+                                task?.didDisplay!(self, false)
+                            }
+                        })
+                        return
+                    }
+                    image = UIGraphicsGetImageFromCurrentImageContext()
+                    UIGraphicsEndImageContext()
                 }
-                let image: UIImage? = UIGraphicsGetImageFromCurrentImageContext()
-                UIGraphicsEndImageContext()
+                
                 if isCancelled() {
                     DispatchQueue.main.async(execute: {
                         if ((task?.didDisplay) != nil) {
@@ -197,36 +238,73 @@ public class TextAsyncLayer: CALayer {
             if task?.willDisplay != nil {
                 task?.willDisplay!(self)
             }
-            UIGraphicsBeginImageContextWithOptions(bounds.size, _: self.isOpaque, _: contentsScale)
-            let context = UIGraphicsGetCurrentContext()
-            if self.isOpaque && context != nil {
+            
+            if #available(iOS 10.0, *) {
+                let format = UIGraphicsImageRendererFormat()
+                format.opaque = self.isOpaque
+                format.scale = contentsScale
+                let renderer = UIGraphicsImageRenderer(size: bounds.size, format: format)
+                let image: UIImage? = renderer.image(actions: { rendererContext in
+                let context = rendererContext.cgContext
+                if self.isOpaque {
                 var size: CGSize = bounds.size
                 size.width *= contentsScale
                 size.height *= contentsScale
-                context?.saveGState()
+                context.saveGState()
                 do {
-                    if self.backgroundColor == nil || self.backgroundColor!.alpha < 1 {
-                        context?.setFillColor(UIColor.white.cgColor)
-                        context?.addRect(CGRect(x: 0, y: 0, width: size.width, height: size.height))
-                        context?.fillPath()
-                    }
-                    if self.backgroundColor != nil {
-                        context?.setFillColor(self.backgroundColor!)
-                        context?.addRect(CGRect(x: 0, y: 0, width: size.width, height: size.height))
-                        context?.fillPath()
-                    }
+                if self.backgroundColor == nil || self.backgroundColor!.alpha < 1 {
+                context.setFillColor(UIColor.white.cgColor)
+                context.addRect(CGRect(x: 0, y: 0, width: size.width, height: size.height))
+                context.fillPath()
                 }
-                context?.restoreGState()
-            }
-            task?.display!(context, bounds.size, {
+                if self.backgroundColor != nil {
+                context.setFillColor(self.backgroundColor!)
+                context.addRect(CGRect(x: 0, y: 0, width: size.width, height: size.height))
+                context.fillPath()
+                }
+                }
+                context.restoreGState()
+                }
+                task?.display!(context, bounds.size, {
                 return false
-            })
-            
-            let image: UIImage? = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            contents = image?.cgImage
-            if task?.didDisplay != nil {
+                })
+                })
+                self.contents = image?.cgImage
+                if task?.didDisplay != nil {
                 task?.didDisplay!(self, true)
+                }
+            } else {
+                UIGraphicsBeginImageContextWithOptions(bounds.size, _: self.isOpaque, _: contentsScale)
+                let context = UIGraphicsGetCurrentContext()
+                if self.isOpaque && context != nil {
+                    var size: CGSize = bounds.size
+                    size.width *= contentsScale
+                    size.height *= contentsScale
+                    context?.saveGState()
+                    do {
+                        if self.backgroundColor == nil || self.backgroundColor!.alpha < 1 {
+                            context?.setFillColor(UIColor.white.cgColor)
+                            context?.addRect(CGRect(x: 0, y: 0, width: size.width, height: size.height))
+                            context?.fillPath()
+                        }
+                        if self.backgroundColor != nil {
+                            context?.setFillColor(self.backgroundColor!)
+                            context?.addRect(CGRect(x: 0, y: 0, width: size.width, height: size.height))
+                            context?.fillPath()
+                        }
+                    }
+                    context?.restoreGState()
+                }
+                task?.display!(context, bounds.size, {
+                    return false
+                })
+                
+                let image: UIImage? = UIGraphicsGetImageFromCurrentImageContext()
+                UIGraphicsEndImageContext()
+                contents = image?.cgImage
+                if task?.didDisplay != nil {
+                    task?.didDisplay!(self, true)
+                }
             }
         }
     }
