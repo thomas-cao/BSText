@@ -951,7 +951,7 @@ public class TextLayout: NSObject, NSCoding, NSCopying {
                         var font = (attrs?[kCTFontAttributeName as NSAttributedString.Key] as! CTFont?)
                         let fontSize: CGFloat = font != nil ? CTFontGetSize(font!) : 12.0
                         let uiFont = UIFont.systemFont(ofSize: fontSize * 0.9)
-                        font = CTFontCreateWithName((uiFont.fontName as CFString?)!, uiFont.pointSize, nil)
+                        font = CTFontCreateUIFontForLanguage(.label, uiFont.pointSize, nil)
                         if font != nil {
                             attrs![kCTFontAttributeName as NSAttributedString.Key] = font
                         }
